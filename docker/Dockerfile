@@ -26,6 +26,8 @@ RUN /tmp/build.sh "$SEAFILE_VERSION" "$SEAFILE_SERVER_DIR" && rm /tmp/build.sh
 # Container initialization scripts ()
 COPY docker-run.sh /bin/docker-run
 
+RUN apk add --update py-mysqldb
+
 EXPOSE 8000 8082
 VOLUME $SEAFILE_SERVER_DIR
 
