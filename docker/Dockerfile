@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.9
 MAINTAINER Vladimir Goshev <sunx@sunx.name>
 
 # SEAFILE_SERVER_DIR:
@@ -24,15 +24,15 @@ COPY seafile-server.patch /tmp/seafile-server.patch
 RUN /tmp/build.sh "$SEAFILE_VERSION" "$SEAFILE_SERVER_DIR" && rm /tmp/build.sh
 
 # Container initialization scripts ()
-COPY docker-run.sh /bin/docker-run
+COPY docker-run docker-run-root /bin/
 
 RUN apk add --update py-mysqldb
 
 EXPOSE 8000 8082
 VOLUME $SEAFILE_SERVER_DIR
 
-USER seafile
-
-# Container will run /bin/docker-run with seafile user access 
+# Container will run /bin/docker-run-root with root user access 
+# to configure seafile user and switch to it
 # to configure (if needed) and run Seafile server
-CMD ["/bin/docker-run"]
+ENTRYPOINT ["/bin/docker-run-root"]
+CMD []
